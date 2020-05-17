@@ -3,6 +3,7 @@ package com.ocr.watchlist;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -18,15 +19,30 @@ public class WatchlistController {
     private static int index = 1;
 
     @GetMapping("/watchlistItemForm")
-    public ModelAndView showWatchlistItemForm(){
+    public ModelAndView showWatchlistItemForm(@RequestParam(required = false) Integer id){
 
         String viewName = "watchlistItemForm";
 
         Map<String,Object> model = new HashMap<>();
 
-        model.put("watchlistItem", new WatchlistItem());
+        WatchlistItem watchlistItem = findWatchlistItemById(id);
 
+        if (watchlistItem == null){
+            model.put("watchlistItem", new WatchlistItem());
+        }else {
+            model.put("watchlistItem", watchlistItem);
+        }
         return new ModelAndView(viewName,model);
+    }
+
+    private WatchlistItem findWatchlistItemById(Integer id) {
+
+        for(WatchlistItem watchlistItem: watchlistItems){
+           if (watchlistItem.getId().equals(id)){
+               return watchlistItem;
+           }
+        }
+        return null;
     }
 
     @PostMapping("/watchlistItemForm")
