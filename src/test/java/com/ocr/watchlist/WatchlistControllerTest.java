@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -28,6 +29,14 @@ public class WatchlistControllerTest {
                 .andExpect(view().name("watchListItemForm"))
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("watchListItem"));
+    }
+
+    @Test
+    public void testSubmitWatchlistItemForm() throws Exception{
+
+        mockMvc.perform(post("/watchlistItemForm"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/watchlist"));
     }
 
 }
