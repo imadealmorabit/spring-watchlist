@@ -39,4 +39,14 @@ public class WatchlistControllerTest {
                 .andExpect(redirectedUrl("/watchlist"));
     }
 
+    @Test
+    public void testGetWatchlist() throws Exception{
+
+        mockMvc.perform(get("/watchlist"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("watchlist"))
+                .andExpect(model().size(2))
+                .andExpect(model().attributeExists("watchListItems", "numberOfMovies"));
+    }
+
 }
